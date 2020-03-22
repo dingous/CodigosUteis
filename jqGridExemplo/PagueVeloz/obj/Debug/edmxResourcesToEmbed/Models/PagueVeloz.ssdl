@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PagueVelozModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EMPRESA">
+    <Key>
+      <PropertyRef Name="EMP_Id" />
+    </Key>
+    <Property Name="EMP_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UF_Id" Type="int" Nullable="false" />
+    <Property Name="EMP_NomeFantasia" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="EMP_CNPJ" Type="char" MaxLength="14" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ESTADO">
+    <Key>
+      <PropertyRef Name="UF_Id" />
+    </Key>
+    <Property Name="UF_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UF_Sigla" Type="char" MaxLength="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FORNECEDOR">
+    <Key>
+      <PropertyRef Name="FND_Id" />
+    </Key>
+    <Property Name="FND_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EMP_Id" Type="int" Nullable="false" />
+    <Property Name="FND_Nome" Type="varchar" MaxLength="300" Nullable="false" />
+    <Property Name="FND_TipoPessoa" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="FND_Documento" Type="char" MaxLength="14" Nullable="false" />
+    <Property Name="FND_RG" Type="nchar" MaxLength="10" />
+    <Property Name="FND_DataNascimento" Type="date" />
+    <Property Name="FND_DataCadastro" Type="date" />
+  </EntityType>
+  <EntityType Name="TELEFONE">
+    <Key>
+      <PropertyRef Name="TEL_Id" />
+    </Key>
+    <Property Name="TEL_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TEL_DDD" Type="int" Nullable="false" />
+    <Property Name="TEL_Numero" Type="int" Nullable="false" />
+    <Property Name="FND_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_EMPRESA_UF">
+    <End Role="ESTADO" Type="Self.ESTADO" Multiplicity="1" />
+    <End Role="EMPRESA" Type="Self.EMPRESA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESTADO">
+        <PropertyRef Name="UF_Id" />
+      </Principal>
+      <Dependent Role="EMPRESA">
+        <PropertyRef Name="UF_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FORNECEDOR_EMPRESA">
+    <End Role="EMPRESA" Type="Self.EMPRESA" Multiplicity="1" />
+    <End Role="FORNECEDOR" Type="Self.FORNECEDOR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EMPRESA">
+        <PropertyRef Name="EMP_Id" />
+      </Principal>
+      <Dependent Role="FORNECEDOR">
+        <PropertyRef Name="EMP_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FORNECEDOR_TELEFONE">
+    <End Role="FORNECEDOR" Type="Self.FORNECEDOR" Multiplicity="1" />
+    <End Role="TELEFONE" Type="Self.TELEFONE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FORNECEDOR">
+        <PropertyRef Name="FND_Id" />
+      </Principal>
+      <Dependent Role="TELEFONE">
+        <PropertyRef Name="FND_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PagueVelozModelStoreContainer">
+    <EntitySet Name="EMPRESA" EntityType="Self.EMPRESA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ESTADO" EntityType="Self.ESTADO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FORNECEDOR" EntityType="Self.FORNECEDOR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TELEFONE" EntityType="Self.TELEFONE" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_EMPRESA_UF" Association="Self.FK_EMPRESA_UF">
+      <End Role="ESTADO" EntitySet="ESTADO" />
+      <End Role="EMPRESA" EntitySet="EMPRESA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FORNECEDOR_EMPRESA" Association="Self.FK_FORNECEDOR_EMPRESA">
+      <End Role="EMPRESA" EntitySet="EMPRESA" />
+      <End Role="FORNECEDOR" EntitySet="FORNECEDOR" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FORNECEDOR_TELEFONE" Association="Self.FK_FORNECEDOR_TELEFONE">
+      <End Role="FORNECEDOR" EntitySet="FORNECEDOR" />
+      <End Role="TELEFONE" EntitySet="TELEFONE" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PagueVelozModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="PagueVelozEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="EMPRESA" EntityType="PagueVelozModel.EMPRESA" />
+    <EntitySet Name="ESTADO" EntityType="PagueVelozModel.ESTADO" />
+    <EntitySet Name="FORNECEDOR" EntityType="PagueVelozModel.FORNECEDOR" />
+    <AssociationSet Name="FK_EMPRESA_UF" Association="PagueVelozModel.FK_EMPRESA_UF">
+      <End Role="ESTADO" EntitySet="ESTADO" />
+      <End Role="EMPRESA" EntitySet="EMPRESA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FORNECEDOR_EMPRESA" Association="PagueVelozModel.FK_FORNECEDOR_EMPRESA">
+      <End Role="EMPRESA" EntitySet="EMPRESA" />
+      <End Role="FORNECEDOR" EntitySet="FORNECEDOR" />
+    </AssociationSet>
+    <EntitySet Name="TELEFONE" EntityType="PagueVelozModel.TELEFONE" />
+    <AssociationSet Name="FK_FORNECEDOR_TELEFONE" Association="PagueVelozModel.FK_FORNECEDOR_TELEFONE">
+      <End Role="FORNECEDOR" EntitySet="FORNECEDOR" />
+      <End Role="TELEFONE" EntitySet="TELEFONE" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="EMPRESA">
+    <Key>
+      <PropertyRef Name="EMP_Id" />
+    </Key>
+    <Property Name="EMP_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UF_Id" Type="Int32" Nullable="false" />
+    <Property Name="EMP_NomeFantasia" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="EMP_CNPJ" Type="String" Nullable="false" MaxLength="14" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="ESTADO" Relationship="PagueVelozModel.FK_EMPRESA_UF" FromRole="EMPRESA" ToRole="ESTADO" />
+    <NavigationProperty Name="FORNECEDOR" Relationship="PagueVelozModel.FK_FORNECEDOR_EMPRESA" FromRole="EMPRESA" ToRole="FORNECEDOR" />
+  </EntityType>
+  <EntityType Name="ESTADO">
+    <Key>
+      <PropertyRef Name="UF_Id" />
+    </Key>
+    <Property Name="UF_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UF_Sigla" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="EMPRESA" Relationship="PagueVelozModel.FK_EMPRESA_UF" FromRole="ESTADO" ToRole="EMPRESA" />
+  </EntityType>
+  <EntityType Name="FORNECEDOR">
+    <Key>
+      <PropertyRef Name="FND_Id" />
+    </Key>
+    <Property Name="FND_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EMP_Id" Type="Int32" Nullable="false" />
+    <Property Name="FND_Nome" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="FND_TipoPessoa" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="FND_Documento" Type="String" Nullable="false" MaxLength="14" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="EMPRESA" Relationship="PagueVelozModel.FK_FORNECEDOR_EMPRESA" FromRole="FORNECEDOR" ToRole="EMPRESA" />
+    <Property Name="FND_RG" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="FND_DataNascimento" Type="DateTime" Precision="0" />
+    <Property Name="FND_DataCadastro" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="TELEFONE" Relationship="PagueVelozModel.FK_FORNECEDOR_TELEFONE" FromRole="FORNECEDOR" ToRole="TELEFONE" />
+  </EntityType>
+  <Association Name="FK_EMPRESA_UF">
+    <End Type="PagueVelozModel.ESTADO" Role="ESTADO" Multiplicity="1" />
+    <End Type="PagueVelozModel.EMPRESA" Role="EMPRESA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESTADO">
+        <PropertyRef Name="UF_Id" />
+      </Principal>
+      <Dependent Role="EMPRESA">
+        <PropertyRef Name="UF_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FORNECEDOR_EMPRESA">
+    <End Type="PagueVelozModel.EMPRESA" Role="EMPRESA" Multiplicity="1" />
+    <End Type="PagueVelozModel.FORNECEDOR" Role="FORNECEDOR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EMPRESA">
+        <PropertyRef Name="EMP_Id" />
+      </Principal>
+      <Dependent Role="FORNECEDOR">
+        <PropertyRef Name="EMP_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="TELEFONE">
+    <Key>
+      <PropertyRef Name="TEL_Id" />
+    </Key>
+    <Property Name="TEL_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TEL_DDD" Type="Int32" Nullable="false" />
+    <Property Name="TEL_Numero" Type="Int32" Nullable="false" />
+    <Property Name="FND_Id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="FORNECEDOR" Relationship="PagueVelozModel.FK_FORNECEDOR_TELEFONE" FromRole="TELEFONE" ToRole="FORNECEDOR" />
+  </EntityType>
+  <Association Name="FK_FORNECEDOR_TELEFONE">
+    <End Type="PagueVelozModel.FORNECEDOR" Role="FORNECEDOR" Multiplicity="1" />
+    <End Type="PagueVelozModel.TELEFONE" Role="TELEFONE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FORNECEDOR">
+        <PropertyRef Name="FND_Id" />
+      </Principal>
+      <Dependent Role="TELEFONE">
+        <PropertyRef Name="FND_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

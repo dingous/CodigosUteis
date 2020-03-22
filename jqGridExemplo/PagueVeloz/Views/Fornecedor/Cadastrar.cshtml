@@ -1,0 +1,148 @@
+﻿@model PagueVeloz.Models.FORNECEDOR
+
+@{
+	ViewBag.Title = "Gerenciar Fornecedores";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<h4>CADASTRAR FORNECEDOR</h4>
+		<hr />
+
+
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+		<div class="alert alert-danger" style="display:none;" id="boxMsg" role="alert">
+			@ViewBag.Msg
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.EMP_Id, "Empresa", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("EMP_Id", null, htmlAttributes: new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.EMP_Id, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.FND_Nome, "Nome", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.FND_Nome, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.FND_Nome, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.FND_TipoPessoa, "Tipo Pessoa", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.DropDownList("FND_TipoPessoa", null, htmlAttributes: new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.FND_TipoPessoa, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.FND_Documento, "CPF / CNPJ", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.FND_Documento, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.FND_Documento, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.FND_RG, "RG", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.FND_RG, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.FND_RG, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.FND_DataNascimento, "Data de Nascimento", htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10">
+				@Html.EditorFor(model => model.FND_DataNascimento, new { htmlAttributes = new { @class = "form-control datepicker", @autocomplete = "off" } })
+				@Html.ValidationMessageFor(model => model.FND_DataNascimento, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+
+
+		<div class="form-group">   		
+
+			<div class="row" style="padding-bottom:5px;" id="modeloToClone">
+
+
+				@Html.LabelFor(model => model.TELEFONE, "Telefones", htmlAttributes: new { @class = "control-label col-md-2" })
+
+
+
+				<div class="col-md-1">
+					<input type="text" maxlength="2" id="TEL_DDD" placeholder="DDD" class="form-control" name="TELEFONE[0].TEL_DDD" />
+				</div>
+				<div class="col-md-2">
+					<input type="text" maxlength="9" id="TEL_Numero" placeholder="Numero" class="form-control" name="TELEFONE[0].TEL_Numero" />
+				</div>
+
+				<div class="col-md-5">
+					<input type="button" id="btnAddTelefone" value="+" class="btn btn-default" />
+				</div>
+
+
+			</div>
+
+			<span id="clones">
+
+
+			</span>
+
+		
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Cadastrar" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}
+
+
+@if (ViewBag.JavaScriptFunction != null)
+{
+	<script type="text/javascript">
+            @Html.Raw(ViewBag.JavaScriptFunction)
+	</script>
+}
+
+<div class="form-group">
+
+	<div class="row">
+		<div class="col-md-3">
+			<input type="text" id="filtro" name="filtro" placeholder="Filtrar por Nome, CPF/CNPJ" class="form-control" />
+		</div>
+		<div class="col-md-3">
+			<input type="text" id="filtroDataCadastro" name="filtroDataCadastro" placeholder="Filtrar por Data de Cadastro" class="form-control datepicker" />
+		</div>
+		<div class="col-md-3">
+			<input type="button" id="BtnFiltrar" value="Filtrar" class="btn btn-default" />
+		</div>
+	</div>
+</div>
+
+<div style="margin-top:30px;">
+
+	<table id="jqGridFornecedor"></table>
+	<div id="jqGridPagerFornecedor"></div>
+</div>
+

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - Pague Veloz - Gestão de Parceiros</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="/Home/Index"><img border="0" src="~/Img/logo-pagueveloz-topo_03.png" style="height:30px; margin-top:10px;" class="img-fluid" />	</a>
+
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li>@Html.ActionLink("Home", "Index", "Home")</li>
+					<li>@Html.ActionLink("Empresas", "Cadastrar", "Empresa")</li>
+					<li>@Html.ActionLink("Fornecedores", "Cadastrar", "Fornecedor")</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - Pague Veloz</p>
+		</footer>
+	</div>
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqgrid")
+	@RenderSection("scripts", required: false)
+
+
+	<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+	<script src="~/Scripts/bootstrap-datepicker-globalize.js"></script>
+	<script src="~/Scripts/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+	<link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+
+
+</body>
+</html>
